@@ -1,0 +1,11 @@
+http://localhost/scrappingnew/propertyi/fetch_improvement3.php
+
+http://localhost/scrappingnew/propertyi/fetch.php?cns=BF,BI,BJ,BW,CD,CG,CI,CM,CV,DJ,DZ,ER,ET,GA,GH,GM,GN,GQ,GW,KE,LS,MG,ML,MR,MU,MW,MZ,NA,NE,NG,RE,RW,SC,SN,ST,SZ,TD,TG,TZ,UG,YT,ZM,ZW
+
+http://localhost/scrappingnew/propertyi/fetch.php?cn=EG
+
+http://localhost/scrappingnew/propertyi/fetch.php?cn=MA
+
+http://localhost/scrappingnew/propertyi/fetch.php?cn=TN
+
+http://localhost/scrappingnew/propertyi/fetch.php?cn=ZA
