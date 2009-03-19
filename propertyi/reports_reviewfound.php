@@ -14,7 +14,7 @@ if (isset($_GET['country'])) {
   $colname_rsView = (get_magic_quotes_gpc()) ? $_GET['country'] : addslashes($_GET['country']);
 }
 mysql_select_db($database_conn, $conn);
-$query_rsView = sprintf("SELECT * FROM property_xml WHERE country = '%s' AND gotit = 1 AND totalreview > 0 and flag = 1", $colname_rsView);
+$query_rsView = sprintf("SELECT * FROM property_xml WHERE country = '%s' AND gotit = 1 AND totalreview > 0 and flag = 1 and hotel_id != 0", $colname_rsView);
 $query_limit_rsView = sprintf("%s LIMIT %d, %d", $query_rsView, $startRow_rsView, $maxRows_rsView);
 $rsView = mysql_query($query_limit_rsView, $conn) or die(mysql_error());
 $row_rsView = mysql_fetch_assoc($rsView);

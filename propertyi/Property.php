@@ -125,7 +125,8 @@ class Property {
 		$postalcode = $rec['postalcode'];
 		//$country = $this->getCountry($rec['country']);
 		$phone = substr($rec['phone'], -6);
-		$name = str_ireplace("Hotel","",$rec['name']);
+		$name = str_ireplace("Hotel ","",$rec['name']);
+		$name = str_ireplace("Hotel","",$name);
 		$name = trim($name);
 		$regexp = "<address>(.*)<\/address>";
 		$cont = $this->getAddress($regexp, $content2);
@@ -158,32 +159,35 @@ class Property {
 			$result['ftype'] = 'staddress7';
 		} else {					
 			$heading = $this->getHeading($content2);
+			$heading = str_ireplace("Hotel ","",$heading);
+			$heading = str_ireplace("Hotel","",$heading);
+			$heading = trim($heading);
 			if(@eregi($heading, $name)) {
-				if(@eregi($stAddress, $cont) && @eregi($heading, $content2)) {
+				if(@eregi($stAddress, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress_2';
-				} else if(@eregi($stAddress2, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress2, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress2_2';
-				} else if(@eregi($postalcode, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($postalcode, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'postalcode_2';
-				} else if(@eregi($city, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($city, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'city_2';
-				} else if(@eregi($stAddress3, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress3, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress3_2';
-				} else if(@eregi($stAddress4, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress4, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress4_2';
-				} else if(@eregi($stAddress5, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress5, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress5_2';
-				} else if(@eregi($stAddress6, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress6, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress6_2';
-				} else if(@eregi($stAddress7, $cont) && @eregi($heading, $content2)) {
+				} else if(@eregi($stAddress7, $cont)) {
 					$result['found'] = 1;
 					$result['ftype'] = 'staddress7_2';
 				}
