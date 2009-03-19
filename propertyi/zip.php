@@ -1,6 +1,9 @@
 <?
 ini_set("memory_limit","500M");
 ini_set("max_execution_time","-1");
+ini_set("include_path", dirname(__FILE__)."/pear");
+echo ini_get("include_path");
+echo "<br>";
 include ('Archive/Zip.php');        // imports
 
 $obj = new Archive_Zip('files/tadv.zip'); // name of zip file
