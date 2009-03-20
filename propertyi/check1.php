@@ -58,18 +58,18 @@ File found.<br />
 		$file1++;
 		} else {
 		$file3[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
-		mysql_query("update property_xml set gotit = 0 where id = '".$row_rsCountry['id']."'") or die('error'.__LINE__);
-		unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+		//mysql_query("update property_xml set gotit = 0 where id = '".$row_rsCountry['id']."'") or die('error'.__LINE__);
+		//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
 		
 		if($row_rsCountry['gotit']>0) {
 			$file4++;
 		} else {
 			$file5[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
-			echo $sql = "update property_xml set improvement4 = 1 where id = '".$row_rsCountry['id']."'";
-			echo "<br>";
-			mysql_query($sql) or die('error'.__LINE__);
-			unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+			//echo $sql = "update property_xml set improvement4 = 1 where id = '".$row_rsCountry['id']."'";
+			//echo "<br>";
+			//mysql_query($sql) or die('error'.__LINE__);
+			//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
 		
 		
@@ -77,24 +77,26 @@ File found.<br />
 			$file6++;
 		} else {
 			$file7[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
-			//echo $sql = "update property_xml set improvement4 = 1 where id = '".$row_rsCountry['id']."'";
-			///echo "<br>";
-			//mysql_query($sql) or die('error'.__LINE__);
-			unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+			//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
 		?>
 <?php } else { 
 	echo "<h3>not found</h3>"; 
 	$file2++;
+	if($row_rsCountry['totalreview']>0) {
+		$file8[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
+	}
 } ?>
   <?php } while ($row_rsCountry = mysql_fetch_assoc($rsCountry)); ?>
 <br />
 <br />
-<?php //echo "file1: $file1, file2: $file2, file3:".count($file3); print_r($file3);
-//echo "<br>";
-//echo "file4: $file4, file5:".count($file5); echo "<pre>"; print_r($file5);echo "<pre>"; 
-//echo "<br>";
-echo "file4: $file4, file5:".count($file6); echo "<pre>"; print_r($file7);echo "<pre>"; 
+<?php echo "file1: $file1, file2: $file2, file3:".count($file3); print_r($file3);
+echo "<br>";
+echo "file4: $file4, file5:".count($file5); echo "<pre>"; print_r($file5);echo "</pre>"; 
+echo "<br>";
+echo "file6:".count($file6); echo "<pre>"; print_r($file7);echo "</pre>"; 
+echo "<br>";
+echo "file8:<pre>"; print_r($file8);echo "</pre>"; 
 
 ?>
 <?php } // Show if recordset not empty ?>
