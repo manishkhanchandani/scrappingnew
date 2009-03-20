@@ -66,7 +66,8 @@ body {
         <?php $totalnoreview += $row_rsCountry['noreview']; ?> </td>
         <td><a href="reports_notfound.php?country=<?php echo $row_rsCountry['country']; ?>"><?php echo $row_rsCountry['nofound']; ?></a> [<?php echo number_format(($row_rsCountry['nofound']/$row_rsCountry['totalip'])*100,2); ?> %]
         <?php $totalnoproperty += $row_rsCountry['nofound']; ?> </td>
-        <td><?php echo $row_rsCountry['review']+$row_rsCountry['noreview']; ?> [<?php echo number_format((($row_rsCountry['review']+$row_rsCountry['noreview'])/$row_rsCountry['totalip'])*100,2); ?> %]        </td>
+        <td><?php echo $row_rsCountry['review']+$row_rsCountry['noreview']; ?> [<?php echo number_format((($row_rsCountry['review']+$row_rsCountry['noreview'])/$row_rsCountry['totalip'])*100,2); ?> %]        
+        <?php $totalproperty += ($row_rsCountry['review']+$row_rsCountry['noreview']); ?></td>
         <td><?php echo $row_rsCountry['totalreviewcount']; ?>
         <?php $totalreviewcount += $row_rsCountry['totalreviewcount']; ?></td>
       </tr>
