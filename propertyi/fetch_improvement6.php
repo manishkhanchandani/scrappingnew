@@ -1,6 +1,17 @@
-<?php include('../Connections/conn.php');
+<?php //include('../Connections/conn.php');
 ini_set('memory_limit', '500M');
 ini_set('max_execution_time', '-1');
+
+# FileName="Connection_php_mysql.htm"
+# Type="MYSQL"
+# HTTP="true"
+$hostname_conn = "64.186.128.115";
+$database_conn = "scrapping1";
+$username_conn = "manishkk";
+$password_conn = "manishkk";
+$conn = mysql_connect($hostname_conn, $username_conn, $password_conn) or trigger_error(mysql_error(),E_USER_ERROR); 
+mysql_select_db($database_conn, $conn);
+
 include('Property.php');
 $time_start = microtime(true);
 if(!($_GET['cn']||$_GET['cns']||$_GET['id'])) {
@@ -119,7 +130,7 @@ if(mysql_num_rows($rs)) {
 			$content = file_get_contents($file);
 		} else {
 			$content = file_get_contents($baseurl);
-			file_put_contents($file, $content);
+			//file_put_contents($file, $content);
 		}
 		
 		echo "Fetching the base page: <br>";
@@ -199,7 +210,7 @@ if(mysql_num_rows($rs)) {
 							$body = @file_get_contents($filename);
 						} else {
 							$body = @file_get_contents($tmpUrl);	
-							$put = @file_put_contents($filename, $body);
+							//$put = @file_put_contents($filename, $body);
 						}
 						
 						// step 3
@@ -236,7 +247,7 @@ if(mysql_num_rows($rs)) {
 </source>';
 		}
 		if($result['reviews']) {
-			file_put_contents($dirfinalxml."/".$id.".xml", $source);
+			//file_put_contents($dirfinalxml."/".$id.".xml", $source);
 			$xmlpath = $rec['xmlpath'];
 			$explode = explode("/", $xmlpath);
 			if($explode) {
@@ -259,40 +270,12 @@ if(mysql_num_rows($rs)) {
 			$reviews = '';
 			$reviews = serialize($result['reviews']);
 			file_put_contents($dirreviews."/".$id.".txt", $reviews);		
-			/*
-			$sql = "INSERT INTO `property_detail` (`poi_id` , `poi_name` , `reviewer` , `reviewdate` , `review_title` , `rating` , `review_detail` , `source` , `filename` , `targetSite` , `avgrating` , `xml_id`, country ) VALUES ";
-			$dataSS = array();
-			$dataSS['poi_id'] = $rec['hotel_id'];
-			$dataSS['poi_name'] = $first['heading'];
-			$dataSS['sourcebase'] = $first['finalUrl'];
-			$dataSS['filename'] = $rec['xmlpath'];
-			$dataSS['targetSite'] = 'tripadvisor';
-			$dataSS['avgrating'] = $first['rating'];
-			$dataSS['xml_id'] = $rec['id'];
-			$dataSS['country'] = $cn1;
-			foreach($result['reviews'] as $k=>$v) {
-				$dataSS['reviewer'] = $v['author'];
-				$dataSS['reviewdate'] = $v['date'];
-				$dataSS['review_title'] = $v['title'];
-				$dataSS['rating'] = $v['review'];
-				$dataSS['review_detail'] = $v['description'];
-				if($v['source']) {
-					$dataSS['source'] = $v['source'];
-				} else {
-					$dataSS['source'] = $dataSS['sourcebase'];
-				}
-				$sql .= $Property->insertIntoNewDbStatement($dataSS);
-				$sql .= ", ";
-			}
-			$sql = substr($sql, 0, -2);
-			mysql_query($sql) or die(mysql_error());
-			*/
 		}
 		if($urls) {
 			$otherpageurls = implode("::", $urls);
-			if(!file_exists($dirbaselinks."/".$id.".txt")) {
-				file_put_contents($dirbaselinks."/".$id.".txt",implode("\n", $urls));
-			}
+			//if(!file_exists($dirbaselinks."/".$id.".txt")) {
+				//file_put_contents($dirbaselinks."/".$id.".txt",implode("\n", $urls));
+			//}
 		}
 		$ts = "update property_xml set improvement4=1, flag = 1, ftype = '".$Property->clean($first['ftype'])."', heading = '".$Property->clean($first['heading'])."', avgrating = '".$Property->clean($first['rating'])."', totalreview = '".$Property->clean($first['review'])."', otherpageurls = '".$Property->clean($otherpageurls)."', otherpageurlflag = '1', gotit = '".$Property->clean($gotit)."'  where id = '".$rec['id']."'";
 		echo $ts;

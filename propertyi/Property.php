@@ -128,7 +128,7 @@ class Property {
 				if($result['found']) {
 					$result['finalUrl'] = $return;	
 					$result['content2'] = $content2;				
-					$fp = file_put_contents($saveFirstPageFile, $content2) or die('error'.__LINE__);
+					//$fp = file_put_contents($saveFirstPageFile, $content2) or die('error'.__LINE__);
 					$sql = "update property_xml set firsturl = '".$this->clean($return)."', firsturlflag = 1 where id = '".$rec['id']."'";
 					mysql_query($sql) or die('error'.__LINE__." ".mysql_error());					
 					break;

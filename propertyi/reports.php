@@ -1,4 +1,15 @@
-<?php require_once('../Connections/conn.php'); ?>
+<?php //require_once('../Connections/conn.php'); ?>
+<?php
+# FileName="Connection_php_mysql.htm"
+# Type="MYSQL"
+# HTTP="true"
+$hostname_conn = "64.186.128.115";
+$database_conn = "scrapping1";
+$username_conn = "manishkk";
+$password_conn = "manishkk";
+$conn = mysql_connect($hostname_conn, $username_conn, $password_conn) or trigger_error(mysql_error(),E_USER_ERROR); 
+mysql_select_db($database_conn, $conn);
+?>
 <?php
 $colcontinent_rsCountryCode = "na";
 if (isset($_GET['continent'])) {
