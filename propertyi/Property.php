@@ -110,6 +110,46 @@ class Property {
 		}
 		return $result;
 	}
+	
+	public function getBasePageParseResultImp($input, $saveFirstPageFile, $rec) {
+		
+		$result = array();		
+		$regexp = "<tr>.*<td.*class=\".*searchPadding\".*>(.*)<\/td>.*<td.*class=\".*searchPadding\".*>(.*)<\/td><\/tr>";
+		if(preg_match_all("/$regexp/siU", $input, $matches, PREG_SET_ORDER)) {
+			foreach($matches as $match) {
+				$return = $this->parseLinks($match[2]);
+				if(eregi("http://", $return)) {
+					$return = $return;
+				} else {
+					$return = "http://www.tripadvisor.com".$return;
+				}
+				$content2 = @file_get_contents($return);				
+				$result = $this->validateplaceImp($content2, $rec);
+				if($result['found']) {
+					$result['finalUrl'] = $return;	
+					$result['content2'] = $content2;				
+					$fp = file_put_contents($saveFirstPageFile, $content2) or die('error'.__LINE__);
+					$sql = "update property_xml set firsturl = '".$this->clean($return)."', firsturlflag = 1 where id = '".$rec['id']."'";
+					mysql_query($sql) or die('error'.__LINE__." ".mysql_error());					
+					break;
+				}
+			}
+		} 		
+		return $result;
+	}
+	public function getSavedPageParseResultImp($saveFirstPageFile, $rec) {
+	
+		$result = array();		
+		$content2 = @file_get_contents($saveFirstPageFile);				
+		$result = $this->validateplaceImp($content2, $rec);
+		if($result['found']) {
+			$result['finalUrl'] = $rec['firsturl'];	
+			$result['content2'] = $content2;
+		}
+		return $result;
+	}
+	
+	
 	public function validateplace($content2, $rec) {
 		$result['found'] = 0;
 		$result['ftype'] = '';
@@ -193,6 +233,91 @@ class Property {
 				}
 			}
 		}
+		return $result;
+	}
+	public function validateplaceImp($content2, $rec) {
+		$result['found'] = 0;
+		$result['ftype'] = '';
+		$stAddress = $rec['streetaddress'];
+		$city = $rec['city'];
+		$city2 = str_ireplace("Street", "St", $city);
+		$city3 = str_ireplace('Boulevard', 'Blvd', $city);
+		$city4 = str_ireplace('Road', 'Rd', $city);
+		$city5 = str_ireplace('Road No', 'Rd', $city);
+		$city6 = str_ireplace('Saint', 'St', $city);
+		$city7 = str_ireplace('Saint', 'St.', $city);
+		
+		$stAddress2 = str_ireplace("Street", "St", $stAddress);
+		$stAddress3 = str_ireplace('Boulevard', 'Blvd', $stAddress);
+		$stAddress4 = str_ireplace('Road', 'Rd', $stAddress);
+		$stAddress5 = str_ireplace('Road No', 'Rd', $stAddress);
+		$stAddress6 = str_ireplace('Saint', 'St', $stAddress);
+		$stAddress7 = str_ireplace('Saint', 'St.', $stAddress);		
+		$stAddress8 = str_ireplace('Avenue', 'Ave', $stAddress);
+		
+		echo "$stAddress, $stAddress2, $stAddress3, $stAddress4, $stAddress5, $stAddress6, $stAddress7, $stAddress8";
+		echo "<br>"; 
+		$postalcode = $rec['postalcode'];
+		//$country = $this->getCountry($rec['country']);
+		$phone = substr($rec['phone'], -6);
+		$name = str_ireplace("Hotel ","",$rec['name']);
+		$name = str_ireplace("Hotel","",$name);
+		$name = trim($name);
+		$regexp = "<address>(.*)<\/address>";
+		$cont = $this->getAddress($regexp, $content2);
+		if(@eregi($stAddress, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress';
+		} else if(@eregi($stAddress2, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress2';
+		} else if(@eregi($postalcode, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'postalcode';
+		} else if(@eregi($city, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city';
+		} else if(@eregi($stAddress3, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress3';
+		} else if(@eregi($stAddress4, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress4';
+		} else if(@eregi($stAddress5, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress5';
+		} else if(@eregi($stAddress6, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress6';
+		} else if(@eregi($stAddress7, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress7';
+		} else if(@eregi($stAddress8, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress8';
+		} else if(@eregi($city2, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city2';
+		} else if(@eregi($city3, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city3';
+		} else if(@eregi($city4, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city4';
+		} else if(@eregi($city5, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city5';
+		} else if(@eregi($city6, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city6';
+		} else if(@eregi($city7, $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city7';
+		} else if($_GET['custom'] && @eregi(urldecode($_GET['custom']), $cont)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'custom - '.$_GET['custom'];
+		}
+		print_r($result);
 		return $result;
 	}
 	public function getCountry($country) {

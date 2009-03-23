@@ -1,6 +1,6 @@
 <?php require_once('../Connections/conn.php'); ?>
 <?php
-$colcontinent_rsCountryCode = "%";
+$colcontinent_rsCountryCode = "na";
 if (isset($_GET['continent'])) {
   $colcontinent_rsCountryCode = (get_magic_quotes_gpc()) ? $_GET['continent'] : addslashes($_GET['continent']);
 }

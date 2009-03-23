@@ -26,13 +26,14 @@ if (isset($country)) {
   $colname_rsView = (get_magic_quotes_gpc()) ? $country : addslashes($country);
 }
 mysql_select_db($database_conn, $conn);
-$query_rsView = sprintf("SELECT a.gotit as gotita, b.gotit as gotitb, a.* FROM property_xml as a LEFT JOIN property_xml_yahoo as b ON a.id = b.id WHERE a.country IN (%s) and a.hotel_id != 0", $colname_rsView);
+$query_rsView = sprintf("SELECT a.gotit as gotita, b.gotit as gotitb, a.* FROM property_xml as a LEFT JOIN property_xml_yahoo1 as b ON a.id = b.id WHERE a.country IN (%s) and a.hotel_id != 0", $colname_rsView);
 $rsView = mysql_query($query_rsView, $conn) or die(mysql_error());
 $row_rsView = mysql_fetch_assoc($rsView);
 $totalRows_rsView = mysql_num_rows($rsView);
 ?><?php echo $query_rsView ?>
   <?php do { ?>
 <?php
+
 if($row_rsView['gotita']==1) {
 	$found1++;
 	echo $found1."<br>";
@@ -45,8 +46,12 @@ foreach($entries->children('http://www.wctravel.com')->generalInfo as $entry) {
 		$found2++;
 	echo $found2."<br>";
 		continue;
-	} 
+	} else {
+		$found4++;
+		echo $originalxml."<br>";
+	}
 }
+
 if($row_rsView['gotitb']==1) {
 	$found3++;
 	echo $found3."<br>";
@@ -58,7 +63,9 @@ if($row_rsView['gotitb']==1) {
 ?>
     <?php } while ($row_rsView = mysql_fetch_assoc($rsView)); 
  ?>
-<?php echo "$found1, $found2, $found3, ".($found1+$found2+$found3); ?>
+<?php echo "$found1, $found2, $found3, ".($found1+$found2+$found3);
+echo "<br>";
+echo $found4; ?>
 <?php
 mysql_free_result($rsView);
 ?>
