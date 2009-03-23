@@ -13,7 +13,7 @@ class POI {
 	}
 	
 	public function poi_notfound($id) {
-		echo $sql = "update poii_xml set flag = 1, gotit = 0 where id = '".$id."'";
+		echo $sql = "update poii_xml set imp1=1, flag = 1, gotit = 0 where id = '".$id."'";
 		echo "<br>";
 		mysql_query($sql) or die(mysql_error()." on line ".__LINE__);
 		echo '<meta http-equiv="refresh" content="5" />';
@@ -87,6 +87,51 @@ class POI {
 				} 
 			}
 		}
+		return $result;
+	}
+	
+	public function validateplaceImp($content2, $rec) {
+		$result['found'] = 0;
+		$result['ftype'] = '';
+		$name = $rec['name'];
+		$stAddress = $rec['address'];
+		$stAddress2 = $rec['address2'];
+		$city = $rec['city'];
+		$province = $rec['province'];
+		$phone = substr($rec['phone'], -8);
+		$fax = substr($rec['fax'], -8);
+		$link = $rec['url'];
+		if($link) {
+			$link2 = parse_url($link);
+			$host = $link2['host'];
+		} else {
+			$host = '';
+		}
+		$postalcode = $rec['zip'];
+		$email = $rec['email'];
+		
+		if(@eregi($stAddress, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress';
+		} else if(@eregi($stAddress2, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'staddress2';
+		} else if(@eregi($host, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'host';
+		} else if(@eregi($email, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'email';
+		} else if(@eregi($phone, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'phone';
+		} else if(@eregi($fax, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'fax';
+		} else if(@eregi($city, $content2) && @eregi($province, $content2) && @eregi($postalcode, $content2)) {
+			$result['found'] = 1;
+			$result['ftype'] = 'city, postal code and province';
+		} 
 		return $result;
 	}
 	

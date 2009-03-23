@@ -101,7 +101,7 @@ if(mysql_num_rows($rs)) {
 					$return = "http://www.tripadvisor.com".$return;
 				}
 				$content2 = @file_get_contents($return);				
-				$first = $poi->validateplace($content2, $rec);
+				$first = $poi->validateplaceImp($content2, $rec);
 				if($first['found']) {
 					$first['finalUrl'] = $return;	
 					$first['content2'] = $content2;				
