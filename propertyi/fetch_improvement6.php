@@ -14,7 +14,7 @@ mysql_select_db($database_conn, $conn);
 
 include('Property.php');
 $time_start = microtime(true);
-if(!($_GET['cn']||$_GET['cns']||$_GET['id'])) {
+if(!($_GET['cn']||$_GET['cns']||$_GET['id']||$_GET['ids'])) {
 	echo 'please add country or countrys or id';
 	exit;
 }
@@ -29,6 +29,8 @@ if($_GET['cns']) {
 	echo $sql = "select * from property_xml where gotit = 0 and country = '".$cn."' and hotel_id != 0 and improvement4 = 0 limit $limit";
 } else if($_GET['id']) {
 	echo $sql = "select * from property_xml where id = '".$_GET['id']."'";
+} else if($_GET['ids']) {
+	echo $sql = "select * from property_xml where id IN (".$_GET['ids'].")";
 } else {
 	echo $sql = "select * from property_xml where gotit = 0 and hotel_id != 0 and improvement4 = 0 limit $limit";
 }
@@ -286,7 +288,7 @@ if(mysql_num_rows($rs)) {
 		echo "<hr>";
 		flush();
 	}
-	echo '<meta http-equiv="refresh" content="15" />';
+	//echo '<meta http-equiv="refresh" content="15" />';
 } else {
 	echo 'no record found';
 }

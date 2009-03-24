@@ -6,13 +6,13 @@ echo ini_get("include_path");
 echo "<br>";
 include ('Archive/Zip.php');        // imports
 
-$obj = new Archive_Zip('files/tadv.zip'); // name of zip file
+$obj = new Archive_Zip('files/'.$_GET['c'].'.zip'); // name of zip file
 // make zip archive
 
 //add Files
 $dirname = "contents";
 require_once("RecursiveSearch.php");
-$directory = "files/tadv";
+$directory = "files/".$_GET['c'];
 $search = new RecursiveSearch($directory);	
 echo "<pre>";
 if($search->files) {

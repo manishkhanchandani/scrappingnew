@@ -1,7 +1,22 @@
-<?php require_once('../Connections/conn.php'); ?>
+<?php //include('../Connections/conn.php'); ?>
+<?php
+# FileName="Connection_php_mysql.htm"
+# Type="MYSQL"
+# HTTP="true"
+$hostname_conn = "64.186.128.115";
+$database_conn = "scrapping1";
+$username_conn = "manishkk";
+$password_conn = "manishkk";
+$conn = mysql_connect($hostname_conn, $username_conn, $password_conn) or trigger_error(mysql_error(),E_USER_ERROR); 
+mysql_select_db($database_conn, $conn);
+?>
 <?php
 ini_set('memory_limit', '500M');
 ini_set('max_execution_time', '-1');
+if(!$_GET['continent']) {
+	echo 'choose continent';
+	exit;
+}
 ?>
 <?php
 $colcontinent_rsCountryCode = "-1";
@@ -49,19 +64,19 @@ $totalRows_rsCountry = mysql_num_rows($rsCountry);
 <?php 
 echo $row_rsCountry['gotit']." = ".$row_rsCountry['totalreview']; print_r($row_rsCountry['xmlpath']); ?><br />
 <?php 
-echo "files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']; 
+echo "files/propertydeliverables/new/".$_GET['continent']."/".$row_rsCountry['xmlpath']; 
 
-if(file_exists("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath'])) { ?><br />
+if(file_exists("files/propertydeliverables/new/".$_GET['continent']."/".$row_rsCountry['xmlpath'])) { ?><br />
 File found.<br />
 		<?php
+		$file9++;
 		if($row_rsCountry['hotel_id']>0) {
-		$file1++;
+			$file1++;
 		} else {
-		$file3[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
-		//mysql_query("update property_xml set gotit = 0 where id = '".$row_rsCountry['id']."'") or die('error'.__LINE__);
-		//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+			$file3[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
+			//mysql_query("update property_xml set gotit = 0 where id = '".$row_rsCountry['id']."'") or die('error'.__LINE__);
+			//unlink("files/propertydeliverables/new/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
-		
 		if($row_rsCountry['gotit']>0) {
 			$file4++;
 		} else {
@@ -69,7 +84,7 @@ File found.<br />
 			//echo $sql = "update property_xml set improvement4 = 1 where id = '".$row_rsCountry['id']."'";
 			//echo "<br>";
 			//mysql_query($sql) or die('error'.__LINE__);
-			//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+			//unlink("files/propertydeliverables/new/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
 		
 		
@@ -77,7 +92,7 @@ File found.<br />
 			$file6++;
 		} else {
 			$file7[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
-			//unlink("files/propertydeliverables/".$_GET['p']."/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
+			//unlink("files/propertydeliverables/new/".$_GET['continent']."/".$row_rsCountry['xmlpath']);
 		}
 		?>
 <?php } else { 
@@ -85,6 +100,7 @@ File found.<br />
 	$file2++;
 	if($row_rsCountry['totalreview']>0) {
 		$file8[] = $row_rsCountry['xmlpath']." ".$row_rsCountry['id'];
+		//mysql_query("update property_xml set totalreview = 0 where id = '".$row_rsCountry['id']."'") or die('error'.__LINE__);
 	}
 } ?>
   <?php } while ($row_rsCountry = mysql_fetch_assoc($rsCountry)); ?>
@@ -94,10 +110,10 @@ File found.<br />
 echo "<br>";
 echo "file4: $file4, file5:".count($file5); echo "<pre>"; print_r($file5);echo "</pre>"; 
 echo "<br>";
-echo "file6:".count($file6); echo "<pre>"; print_r($file7);echo "</pre>"; 
+echo "file6:".$file6; echo "<pre>"; print_r($file7);echo "</pre>"; 
 echo "<br>";
 echo "file8:<pre>"; print_r($file8);echo "</pre>"; 
-
+echo "file9: $file9";
 ?>
 <?php } // Show if recordset not empty ?>
 <?php if ($totalRows_rsCountry == 0) { // Show if recordset empty ?>

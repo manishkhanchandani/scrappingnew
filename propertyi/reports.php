@@ -33,7 +33,7 @@ if (isset($country)) {
   $colcountry_rsCountry = (get_magic_quotes_gpc()) ? $country : addslashes($country);
 }
 mysql_select_db($database_conn, $conn);
-$query_rsCountry = sprintf("SELECT distinct a.country, b.cnt as review, c.cnt as noreview, d.cnt as nofound, e.cnt as totalip, f.cnt as totalreviewcount FROM property_xml as a LEFT JOIN ip_review as b ON a.country = b.country LEFT JOIN ip_noreview as c ON a.country = c.country LEFT JOIN ip_nofound as d ON a.country = d.country LEFT JOIN ip_total as e ON a.country = e.country LEFT JOIN ipreviewcount as f ON a.country = f.country WHERE e.cnt > 0 AND a.country IN (%s) ORDER BY totalip DESC, review DESC, noreview DESC, nofound DESC", $colcountry_rsCountry);
+$query_rsCountry = sprintf("SELECT distinct a.country, b.cnt as review, c.cnt as noreview, d.cnt as nofound, e.cnt as totalip, f.cnt as totalreviewcount FROM property_xml as a LEFT JOIN ip_review as b ON a.country = b.country LEFT JOIN ip_noreview as c ON a.country = c.country LEFT JOIN ip_nofound as d ON a.country = d.country LEFT JOIN ip_total as e ON a.country = e.country LEFT JOIN ipreviewcount as f ON a.country = f.country WHERE e.cnt > 0 AND a.country IN (%s) ORDER BY country ASC, totalip DESC, review DESC, noreview DESC, nofound DESC", $colcountry_rsCountry);
 $rsCountry = mysql_query($query_rsCountry, $conn) or die(mysql_error());
 $row_rsCountry = mysql_fetch_assoc($rsCountry);
 $totalRows_rsCountry = mysql_num_rows($rsCountry);
